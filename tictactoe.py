@@ -57,12 +57,63 @@ def add_borders(matrix):
     return field
 
 
-test_str = 'O_OXXO_XX'
-marks = ('X', 'O')
+def check_state(line):
+    Xs = line.count('X')
+    Os = line.count('O')
+    Ss = line.count('_')
 
-matrix = line_to_matrix(input('Enter cells: '))
-# matrix = line_to_matrix(test_str)
-field = add_borders(matrix)
+    win_cases = []
 
+    for i in range(3):
+        temp_list = []
+        for j in range(i, i + 7, 3):
+            temp_list.append(line[j])
+        win_cases.append(''.join(temp_list))
+
+    for i in range(0, 9, 3):
+        win_cases.append(line[i:i + 3])
+
+    temp_list = []
+    for i in range(0, 9, 4):
+        temp_list.append(line[i])
+    win_cases.append(''.join(temp_list))
+
+    temp_list = []
+    for i in range(2, 7, 2):
+        temp_list.append(line[i])
+    win_cases.append(''.join(temp_list))
+
+    win_cases_counter = 0
+    win_mark = ''
+
+    for i in range(8):
+        if len(set(win_cases[i])) == 1:
+            win_cases_counter += 1
+            win_mark = win_cases[i][0]
+
+    if abs(Xs - Os) > 1:
+        print('Impossible')
+    elif win_cases_counter > 1:
+        print('Impossible')
+    elif win_cases_counter == 1:
+        print(win_mark, 'wins')
+    elif Ss == 0:
+        print('Draw')
+    else:
+        print('Game not finished')
+
+    return
+
+
+# test_str = 'XOXOXOXXO'
+# marks = ('X', 'O')
+
+input_string = input('Enter cells: ')
+
+field = add_borders(line_to_matrix(input_string))
 for i in range(len(field)):
     print(*field[i], sep='')
+
+check_state(input_string)
+
+
