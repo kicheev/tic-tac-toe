@@ -28,6 +28,13 @@ def line_to_matrix(line):
     return matrix
 
 
+def print_matrix(matrix):
+    for i in matrix:
+        for j in i:
+            print(j, end=' ')
+        print()
+
+
 def matrix_to_line(matrix):
     line = [j for i in matrix for j in i]
     return line
@@ -105,15 +112,52 @@ def check_state(line):
     return
 
 
-# test_str = 'XOXOXOXXO'
-# marks = ('X', 'O')
+def input_coordinates():
 
-input_string = input('Enter cells: ')
+    global matrix
 
-field = add_borders(line_to_matrix(input_string))
-for i in range(len(field)):
-    print(*field[i], sep='')
+    while True:
 
-check_state(input_string)
+        input_string = [i for i in input('Enter the coordinates: ').split()]
+
+        if (len(input_string) < 2) or not (input_string[0].isdigit() and input_string[1].isdigit()):
+            print('You should enter numbers!')
+            continue
+
+        x = int(input_string[0])
+        y = int(input_string[1])
+
+        if not ((1 <= x <= 3) and (1 <= y <= 3)):
+            print('Coordinates should be from 1 to 3!')
+            continue
+
+        if matrix[-y][x-1] != ' ':
+            print('This cell is occupied! Choose another one!')
+            print(matrix[-y][x-1])
+            continue
+
+        else:
+            matrix[-y][x-1] = 'X'
+            break
+
+
+input_list = ['X_X_O____', '_XXOO_OX_', '789456123']
+
+input_string = input('Enter cells: ').replace('_', ' ')
+# input_string = input_list[1].replace('_', ' ')
+
+matrix = line_to_matrix(input_string)
+
+field = add_borders(matrix)
+for i in field:
+    print(*i, sep='')
+
+input_coordinates()
+
+field = add_borders(matrix)
+for i in field:
+    print(*i, sep='')
+
+# check_state(input_string)
 
 
